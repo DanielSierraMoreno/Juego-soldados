@@ -1,0 +1,5 @@
+F:/Juego soldados/.utmp/RelWithDebInfo/3q3g355e/armeabi-v7a/CMakeFiles/edit_cache.dir
+F:/Juego soldados/.utmp/RelWithDebInfo/3q3g355e/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+F:/Juego soldados/.utmp/RelWithDebInfo/3q3g355e/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+F:/Juego soldados/.utmp/RelWithDebInfo/3q3g355e/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+F:/Juego soldados/.utmp/RelWithDebInfo/3q3g355e/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir

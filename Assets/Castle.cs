@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ public class Castle : MonoBehaviour
 	public static Castle Instance { get; private set; }
 
 	public Transform pos;
+
+	public GameObject pawnPrefab;
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
@@ -42,15 +45,19 @@ public class Castle : MonoBehaviour
 			{
 				if (pawn == PlayerController.Instance.currentPlayer)
 				{
+					pawn.agent.isStopped = true;
+
 					pawn.haveObject = false;
-					money += 5;
+					money += pawn.money;
 					pawn.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("DeSpawn", 0);
 
 				}
 				else
 				{
+					pawn.agent.isStopped = false;
+
 					pawn.haveObject = false;
-					money += 5;
+					money += pawn.money;
 					pawn.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("DeSpawn", 0);
 					pawn.agent.destination = MineController.Instance.GetMineUnocupped(pawn.transform.position);
 					pawn.state = Pawn.State.MOVING;
@@ -60,6 +67,66 @@ public class Castle : MonoBehaviour
 			}
 
 
+
+		}
+	}
+
+	public void BuyPawn()
+	{
+		int price = 0;
+
+		foreach (Pawn pawn in FindObjectsOfType<Pawn>(true))
+		{
+			if (pawn.gameObject.activeSelf)
+			{
+				price = 150;
+			}
+		}
+
+		if (money >= price)
+		{
+			foreach (Pawn pawn in FindObjectsOfType<Pawn>(true))
+			{
+				if (!pawn.gameObject.activeSelf)
+				{
+					pawn.transform.localPosition = Vector3.zero;
+					pawn.gameObject.SetActive(true);
+					pawn.Reset();
+
+					money -= 150;
+
+					if (money < 0)
+						money = 0;
+					return;
+				}
+			}
+
+		}
+	}
+
+	public void BuyWarrior()
+	{
+		int price = 200;
+
+
+
+		if (money >= price)
+		{
+			foreach (Warrior warrior in FindObjectsOfType<Warrior>(true))
+			{
+				if (!warrior.gameObject.activeSelf)
+				{
+					warrior.transform.localPosition = Vector3.zero;
+					warrior.gameObject.SetActive(true);
+					warrior.Reset();
+
+					money -= 200;
+
+					if (money < 0)
+						money = 0;
+					return;
+				}
+			}
 
 		}
 	}

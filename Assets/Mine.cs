@@ -11,7 +11,14 @@ public class Mine : MonoBehaviour
 
 	public bool isPlayer
 	{
-		get { return player == PlayerController.Instance.currentPlayer; }
+		get { 
+
+			if (PlayerController.Instance.currentPlayer != null)
+			return (player == PlayerController.Instance.currentPlayer);
+
+			return false;
+		
+		}
 	}    
 	
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -45,8 +52,30 @@ public class Mine : MonoBehaviour
 				player.anim.CrossFade("Idle_0", 0);
 				player.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("Spawn", 0);
 
+				if (isPlayer)
+				{
+					player.money = 125;
+					player.agent.isStopped = true;
+				}
+				else
+				{
+					player.agent.isStopped = false;
+
+					player.money = 75;
+				}
+			}
+
+			if (isPlayer)
+			{
+				player.slider.value = ((Time.time - miningStartTime)/ miningTime);
+
+			}
+			else
+			{
+				player.slider.value = ((Time.time - miningStartTime) / miningTime)*0.75f;
 			}
 		}
+
 	}
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -67,7 +96,7 @@ public class Mine : MonoBehaviour
 	{
 		if (collision.GetComponent<Pawn>() != null && !mining)
 		{
-			if (collision.GetComponent<Pawn>() == PlayerController.Instance.currentPlayer)
+			if (collision.GetComponent<Pawn>() == player)
 			{
 				player = null;
 
