@@ -49,7 +49,7 @@ public class Castle : MonoBehaviour
 
 					pawn.haveObject = false;
 					money += pawn.money;
-					pawn.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("DeSpawn", 0);
+					pawn.transform.GetChild(0).GetChild(0).GetComponent<Animator>().CrossFade("DeSpawn", 0);
 
 				}
 				else
@@ -58,7 +58,7 @@ public class Castle : MonoBehaviour
 
 					pawn.haveObject = false;
 					money += pawn.money;
-					pawn.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("DeSpawn", 0);
+					pawn.transform.GetChild(0).GetChild(0).GetComponent<Animator>().CrossFade("DeSpawn", 0);
 					pawn.agent.destination = MineController.Instance.GetMineUnocupped(pawn.transform.position);
 					pawn.state = Pawn.State.MOVING;
 					pawn.targetDestination = pawn.agent.destination;

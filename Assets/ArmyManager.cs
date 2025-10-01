@@ -1,13 +1,15 @@
 using UnityEngine;
-using System.Linq;  
+using System.Linq;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class ArmyManager : MonoBehaviour
 {
     public enum GlobalOrders {RETREAT, DEFENSE, ATTACK};
 
 	public GlobalOrders globalOrder;
-	public DefensePoint[] defensePoint;
-	public AttackPoints[] attackPoints;
+	public List<DefensePoint> defensePoint;
+	public List<AttackPoints> attackPoints;
 	public bool autoAssign = true;
 
 	public static ArmyManager Instance { get; private set; }
@@ -30,7 +32,17 @@ public class ArmyManager : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-    {
+	{
+		AttackPoints[] attackPoint = FindObjectsByType<AttackPoints>(FindObjectsSortMode.None)
+					 .Where(t => t.gameObject.activeSelf)
+					 .ToArray();
+		attackPoints.Clear();
+
+		foreach (AttackPoints point in attackPoint)
+		{
+			attackPoints.Add(point);
+		}
+
 		if (autoAssign && globalOrder == GlobalOrders.ATTACK)
 		{
 			AssignTroops();
@@ -97,7 +109,7 @@ public class ArmyManager : MonoBehaviour
 	{
 		float minSqrDistance = float.MaxValue;
 
-		for (int i = 0; i < defensePoint.Length; i++)
+		for (int i = 0; i < defensePoint.Count; i++)
 		{
 			if (defensePoint[i].occuped)
 				continue; // Ignora puntos ocupados

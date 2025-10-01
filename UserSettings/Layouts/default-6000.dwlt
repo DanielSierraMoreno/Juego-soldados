@@ -219,8 +219,8 @@ MonoBehaviour:
     y: 0
     width: 1179
     height: 660
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 226}
+  m_MaxSize: {x: 4002, y: 4026}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -380,8 +380,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Game\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 788
-    y: 739
+    x: 789
+    y: 24
     width: 1165
     height: 607
   m_SerializedDataModeController:
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 367
     height: 634
   m_SerializedDataModeController:
@@ -547,8 +547,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 368
-    y: 79
+    x: 369
+    y: 24
     width: 1177
     height: 634
   m_SerializedDataModeController:
@@ -1622,8 +1622,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "UnityEditor.Tilemaps.GridPaintPaletteWindow\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1547
-    y: 79
+    x: 1548
+    y: 24
     width: 406
     height: 634
   m_SerializedDataModeController:
@@ -1687,7 +1687,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 739
+    y: 24
     width: 787
     height: 607
   m_SerializedDataModeController:
@@ -1731,7 +1731,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 79}
     m_SelectedIDs: f8b10000
     m_LastClickedID: 45560
-    m_ExpandedIDs: 00000000f8b100009cb200009eb2000034ea000042ea0000c23b0100ca3b0100b84c0200c04c0200c84c020000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000cab40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1760,7 +1760,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f8b1000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000cab40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1897,8 +1897,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1955
-    y: 79
+    x: 1956
+    y: 24
     width: 604
     height: 1267
   m_SerializedDataModeController:

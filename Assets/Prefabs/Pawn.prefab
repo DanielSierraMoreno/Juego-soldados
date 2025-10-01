@@ -572,37 +572,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.75
---- !u!1 &7457074991253223404
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6108257544807843278}
-  m_Layer: 0
-  m_Name: Pivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6108257544807843278
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7457074991253223404}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.12, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1801469056483511005}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8076137435999573976
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +585,7 @@ GameObject:
   - component: {fileID: 648163863009906084}
   - component: {fileID: 9145472651882779384}
   - component: {fileID: 6251752553061818753}
+  - component: {fileID: 1818750821751408461}
   m_Layer: 3
   m_Name: Pawn
   m_TagString: Untagged
@@ -658,6 +628,12 @@ MonoBehaviour:
   troopType: 0
   selected: 0
   agent: {fileID: 9145472651882779384}
+  stateArmy: 0
+  targetAttack: 0
+  currentTarget: {fileID: 0}
+  isAttacking: 0
+  isDoingAttack: 0
+  delayBetweenAttacks: 0.5
   state: 3
   haveObject: 0
   targetDestination: {x: 0, y: 0, z: 0}
@@ -758,6 +734,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1818750821751408461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076137435999573976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef79c05c9ef0df4eb658f5da353d049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackPointIsTroop
+  assignedTroops: []
+  maxTroops: 5
+  lives: 5
 --- !u!1 &8666683898345033718
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,9 +895,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: bb9a964408273654d93c6fad2bcce449, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6108257544807843278}
     - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: bb9a964408273654d93c6fad2bcce449, type: 3}
       insertIndex: -1
       addedObject: {fileID: 740582768589439465}

@@ -15,7 +15,7 @@ public class SortLayerTroops : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
 		{
             SpriteRenderer render = transform.GetChild(i).GetChild(0).GetComponent<SpriteRenderer>();
-			render.sortingOrder = 100000 - ((int)((render.transform.GetChild(0).position.y + 50) * 100) * 5);
+			render.sortingOrder = 100000 - ((int)((render.transform.parent.position.y + 50) * 100) * 5);
 		}
     }
 }

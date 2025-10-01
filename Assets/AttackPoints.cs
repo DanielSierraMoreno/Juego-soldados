@@ -8,6 +8,7 @@ public class AttackPoints : MonoBehaviour
 	public int maxTroops = 5;
 
 	public bool HasSpace => assignedTroops.Count < maxTroops;
+	public int lives = 5;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -21,12 +22,25 @@ public class AttackPoints : MonoBehaviour
 		
 	}
 
-
-	public void Destroy()
+	public virtual void GetDamage()
 	{
-		foreach (var troop in assignedTroops)
+		lives--;
+
+		if (lives <= 0)
 		{
-			troop.ClearTarget();
+			Destroy();
 		}
+	}
+
+	public virtual void Destroy()
+	{
+		for (int i = 0; assignedTroops.Count != 0; i = 0)
+		{
+			assignedTroops[0].ClearTarget();
+		}
+
+		ArmyManager.Instance.attackPoints.Remove(this);
+		this.gameObject.SetActive(false);
+
 	}
 }

@@ -50,7 +50,7 @@ public class Mine : MonoBehaviour
 
 				player.state = Pawn.State.IDLE;
 				player.anim.CrossFade("Idle_0", 0);
-				player.transform.GetChild(0).GetChild(1).GetComponent<Animator>().CrossFade("Spawn", 0);
+				player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().CrossFade("Spawn", 0);
 
 				if (isPlayer)
 				{

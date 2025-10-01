@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 7086951280873514740}
   - component: {fileID: 8979078155508170245}
   - component: {fileID: 670380137918939923}
+  - component: {fileID: 7537440599514273982}
   m_Layer: 3
   m_Name: Warrior
   m_TagString: Untagged
@@ -127,6 +128,7 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   isAttacking: 0
   isDoingAttack: 0
+  delayBetweenAttacks: 0.5
   attackRange: 1.5
 --- !u!195 &7086951280873514740
 NavMeshAgent:
@@ -223,37 +225,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!1 &8203883442244051718
-GameObject:
+--- !u!114 &7537440599514273982
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2682619493802116777}
-  m_Layer: 0
-  m_Name: Pivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2682619493802116777
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8203883442244051718}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.18, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3247019993527173512}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 6528772371367620406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef79c05c9ef0df4eb658f5da353d049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackPointIsTroop
+  assignedTroops: []
+  maxTroops: 5
+  lives: 5
 --- !u!1001 &4637087644252061317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -312,10 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: 8458259e3faedb948a4bc8c84355ff40, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2682619493802116777}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 8458259e3faedb948a4bc8c84355ff40, type: 3}
 --- !u!4 &3247019993527173512 stripped
