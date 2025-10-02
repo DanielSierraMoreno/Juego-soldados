@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Linq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -53,6 +53,7 @@ public class ArmyManager : MonoBehaviour
 		Troop[] allTroops = FindObjectsByType<Troop>(FindObjectsSortMode.None)
 							 .Where(t => t.gameObject.activeSelf)
 							 .Where(t => !t.selected)
+							 .Where(t => !t.isTower)
 							 .Where(t => t.troopType != Troop.Type.PAWN).ToArray();
 
 		foreach (Troop troop in allTroops)
@@ -60,7 +61,7 @@ public class ArmyManager : MonoBehaviour
 			// Tropas sin target
 			if (!troop.isAttacking)
 			{
-				AttackPoints closest = GetClosestAvailableAttackPoint(troop.transform.position);
+				AttackPoints closest = GetClosestAvailableAttackPoint(troop.transform.position,null,troop);
 				if (closest != null)
 				{
 					troop.SetTarget(closest);
@@ -68,14 +69,14 @@ public class ArmyManager : MonoBehaviour
 			}
 			else
 			{
-				// Tropas con target: comprobar si hay un hueco m·s cercano
-				AttackPoints newClosest = GetClosestAvailableAttackPoint(troop.transform.position, troop.currentTarget);
+				// Tropas con target: comprobar si hay un hueco m√°s cercano
+				AttackPoints newClosest = GetClosestAvailableAttackPoint(troop.transform.position, troop.currentTarget, troop);
 				if (newClosest != null)
 				{
 					float distToCurrent = (troop.currentTarget.transform.position - troop.transform.position).sqrMagnitude;
 					float distToNew = (newClosest.transform.position - troop.transform.position).sqrMagnitude;
 
-					if (distToNew < distToCurrent) // solo reasignar si est· m·s cerca
+					if (distToNew < distToCurrent) // solo reasignar si est√° m√°s cerca
 					{
 						troop.ClearTarget();
 						troop.SetTarget(newClosest);
@@ -84,7 +85,7 @@ public class ArmyManager : MonoBehaviour
 			}
 		}
 	}
-	AttackPoints GetClosestAvailableAttackPoint(Vector3 troopPos, AttackPoints ignoreTarget = null)
+	AttackPoints GetClosestAvailableAttackPoint(Vector3 troopPos, AttackPoints ignoreTarget = null, Troop troop = null)
 	{
 		AttackPoints closest = null;
 		float minSqr = float.MaxValue;
@@ -92,10 +93,13 @@ public class ArmyManager : MonoBehaviour
 		foreach (var point in attackPoints)
 		{
 			if (point == ignoreTarget) continue;
-
-			if (!point.HasSpace) continue;
-
 			float sqrDist = (point.transform.position - troopPos).sqrMagnitude;
+
+			if (!point.HasSpace)
+			{
+				continue;
+			}
+
 			if (sqrDist < minSqr)
 			{
 				minSqr = sqrDist;
@@ -119,7 +123,7 @@ public class ArmyManager : MonoBehaviour
 
 
 
-		// Si no hay ning˙n punto libre, devuelve la posiciÛn original o Vector3.zero
+		// Si no hay ning√∫n punto libre, devuelve la posici√≥n original o Vector3.zero
 		return pos;
 	}
 	
@@ -143,14 +147,14 @@ public class ArmyManager : MonoBehaviour
 	}
 	public void SetGlobalOrderDefense()
 	{
-		if (this.globalOrder == GlobalOrders.DEFENSE)
-			return;
+
 
 		this.globalOrder = GlobalOrders.DEFENSE;
 
 		Troop[] allTroops = FindObjectsByType<Troop>(FindObjectsSortMode.None)
 					 .Where(t => t.gameObject.activeSelf)
 					 .Where(t => !t.selected)
+					 .Where(t => t.isAttacking)
 					 .Where(t => t.troopType != Troop.Type.PAWN).ToArray();
 
 		foreach (Troop troop in allTroops)

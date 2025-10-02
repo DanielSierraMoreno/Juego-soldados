@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
 	public GameObject cameraFollow;
 
+	public float cameraLimitMinX, cameraLimitMaxX, cameraLimitMinY, cameraLimitMaxY, cameraMaxZoom, cameraMinZoom;
+
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
@@ -44,6 +46,13 @@ public class PlayerController : MonoBehaviour
 				currentPlayer.Attack(attackJoystick.Direction);
 			}
 		}
+		else if (attackJoystick?.Direction.magnitude > 0.001f)
+		{
+			if (currentPlayer != null)
+			{
+				currentPlayer.Attack(new Vector3(currentPlayer.transform.GetChild(0).localScale.x, 0,0));
+			}
+		}
 
 		if (Input.touchCount == 2)
 		{
@@ -71,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
 			// Zoom → modificar OrthographicSize
 			float newZoom = camera.Lens.OrthographicSize - difference * 0.75f * Time.deltaTime;
-			newZoom = Mathf.Clamp(newZoom, 4, 8);
+			newZoom = Mathf.Clamp(newZoom, cameraMinZoom, cameraMaxZoom);
 
 			camera.Lens.OrthographicSize = newZoom;
 
@@ -124,7 +133,7 @@ public class PlayerController : MonoBehaviour
 					{
 						currentPlayer.DeSelect();
 					}
-
+					closest.GetComponentInParent<EnemyAttackPointIsTroop>().Select();
 					currentPlayer = closest.GetComponentInParent<Troop>();
 					currentPlayer.Select();
 
@@ -171,8 +180,8 @@ public class PlayerController : MonoBehaviour
 
 					Vector3 newPos = cameraFollow.transform.position + dir * moveSpeed * Time.deltaTime;
 
-					newPos.x = Mathf.Clamp(newPos.x, -10, 40);
-					newPos.y = Mathf.Clamp(newPos.y, -6, 1);
+					newPos.x = Mathf.Clamp(newPos.x, cameraLimitMinX, cameraLimitMaxX);
+					newPos.y = Mathf.Clamp(newPos.y, cameraLimitMinY, cameraLimitMaxY);
 
 					cameraFollow.transform.position = newPos;
 				}

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4017071772163662329}
   - component: {fileID: 6619761825565905969}
   - component: {fileID: 7346431951021964801}
+  - component: {fileID: 476400687120935813}
   m_Layer: 0
   m_Name: Bushes 3
   m_TagString: Untagged
@@ -101,7 +102,7 @@ Animator:
   m_GameObject: {fileID: 4812397076117104178}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 8154814857493869911, guid: a971442efea1aea45b38b3391c75b0b2, type: 3}
+  m_Controller: {fileID: 9100000, guid: 724f16e02f249534b9409095fe101f83, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -113,3 +114,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &476400687120935813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4812397076117104178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dcacae319664064588ea6bc5c0ceb6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomizeAnimationStart

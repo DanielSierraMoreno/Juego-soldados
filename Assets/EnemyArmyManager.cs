@@ -35,6 +35,7 @@ public class EnemyArmyManager : MonoBehaviour
 
 		EnemyAttackPoints[] attackPoint = FindObjectsByType<EnemyAttackPoints>(FindObjectsSortMode.None)
 					 .Where(t => t.gameObject.activeSelf)
+					 .Where(t => t.enabled)
 					 .ToArray();
 		attackPoints.Clear();
 
@@ -54,6 +55,7 @@ public class EnemyArmyManager : MonoBehaviour
 	{
 		EnemyTroops[] allTroops = FindObjectsByType<EnemyTroops>(FindObjectsSortMode.None)
 							 .Where(t => t.gameObject.activeSelf)
+							 .Where(t => !t.isTower)
 							 .ToArray();
 
 		foreach (EnemyTroops troop in allTroops)

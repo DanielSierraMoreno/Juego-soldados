@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +14,6 @@ public class Castle : MonoBehaviour
 
 	public Transform pos;
 
-	public GameObject pawnPrefab;
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
@@ -28,7 +28,7 @@ public class Castle : MonoBehaviour
 			Destroy(gameObject); // Si ya existe una instancia, destruimos la duplicada
 		}
 	}
-
+	private float deltaTime = 0.0f;
 	// Update is called once per frame
 	void Update()
     {
@@ -108,7 +108,13 @@ public class Castle : MonoBehaviour
 	{
 		int price = 200;
 
+		int actual = FindObjectsOfType<Troop>(true)
+			.Where(t => t.troopType != Troop.Type.PAWN)
+			.Where(t => !t.isTower)
+			.Where(t => t.gameObject.activeSelf).Count();
 
+		if (actual >= 20)
+			return;
 
 		if (money >= price)
 		{
@@ -119,6 +125,39 @@ public class Castle : MonoBehaviour
 					warrior.transform.localPosition = Vector3.zero;
 					warrior.gameObject.SetActive(true);
 					warrior.Reset();
+
+					money -= 200;
+
+					if (money < 0)
+						money = 0;
+					return;
+				}
+			}
+
+		}
+	}
+
+	public void BuyArcher()
+	{
+		int price = 200;
+
+		int actual = FindObjectsOfType<Troop>(true)
+					.Where(t => t.troopType != Troop.Type.PAWN)
+					.Where(t => !t.isTower)
+					.Where(t => t.gameObject.activeSelf).Count();
+
+		if (actual >= 20)
+			return;
+
+		if (money >= price)
+		{
+			foreach (Archer archer in FindObjectsOfType<Archer>(true))
+			{
+				if (!archer.gameObject.activeSelf && !archer.isTower)
+				{
+					archer.transform.localPosition = Vector3.zero;
+					archer.gameObject.SetActive(true);
+					archer.Reset();
 
 					money -= 200;
 

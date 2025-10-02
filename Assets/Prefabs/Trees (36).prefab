@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5615651236229590330}
   - component: {fileID: 8657743481237925599}
   - component: {fileID: 7538734635959520353}
+  - component: {fileID: 4015828749784540591}
   m_Layer: 0
   m_Name: Trees (36)
   m_TagString: Untagged
@@ -114,6 +115,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4015828749784540591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3950330237992813740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dcacae319664064588ea6bc5c0ceb6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomizeAnimationStart
 --- !u!1 &7745632086285340158
 GameObject:
   m_ObjectHideFlags: 0

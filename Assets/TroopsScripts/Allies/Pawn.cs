@@ -24,13 +24,16 @@ public class Pawn : Troop
 
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
+		this.GetComponent<EnemyAttackPointIsTroop>().lives = maxLive;
 
 	}
 
 	// Update is called once per frame
 	protected override void Update()
-    {
-		if(state == State.MINING)
+	{
+		base.Update();
+
+		if (state == State.MINING)
 			slider.gameObject.SetActive(true);
 		else
 			slider.gameObject.SetActive(false);
@@ -116,6 +119,8 @@ public class Pawn : Troop
 		haveObject = false;
 		state = State.IDLE;
 		money = 0;
+		this.GetComponent<EnemyAttackPointIsTroop>().lives = maxLive;
+
 	}
 
 	public override void DeSelect()

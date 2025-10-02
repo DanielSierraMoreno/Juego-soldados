@@ -1,0 +1,5 @@
+F:/Juego soldados/.utmp/Debug/j2g4a252/armeabi-v7a/CMakeFiles/edit_cache.dir
+F:/Juego soldados/.utmp/Debug/j2g4a252/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+F:/Juego soldados/.utmp/Debug/j2g4a252/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+F:/Juego soldados/.utmp/Debug/j2g4a252/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+F:/Juego soldados/.utmp/Debug/j2g4a252/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir

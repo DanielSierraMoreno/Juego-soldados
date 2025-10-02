@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Troop : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Troop : MonoBehaviour
 
 	public NavMeshAgent agent;
 
-	public enum StateArmy { MOVING, IDLE, ATTACKING, DEFENSE };
+	public enum StateArmy { MOVING, IDLE, ATTACKING, DEFENSE, CONTRATTACK };
 	public StateArmy stateArmy;
 
 	public bool targetAttack = false;
@@ -29,19 +30,40 @@ public class Troop : MonoBehaviour
 
 	public float delayBetweenAttacks = 0.5f;
 
+	public int maxLive = 5;
+	public Slider sliderLive;
+	public float timeToShowSliderLive = -100;
+	public float visionRangeOnDefense = 8;
+
+	public bool isTower = false;
+
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	protected virtual void Start()
 	{
-
-    }
+		timeToShowSliderLive = -100;
+	}
 
 	// Update is called once per frame
 	protected virtual void Update()
     {
-        
+		if ((Time.time - timeToShowSliderLive) < 2)
+		{
+			sliderLive.value = (float)this.GetComponent<EnemyAttackPointIsTroop>().lives / (float)maxLive;
+
+			// tiempo relativo dentro del intervalo de 2s
+			float t = (Time.time - timeToShowSliderLive) / 2f;
+
+			// alpha va de 1 a 0 en esos 2s
+			sliderLive.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(1f, 0f, t);
+		}
+		else
+		{
+			sliderLive.GetComponent<CanvasGroup>().alpha = 0;
+		}
 
 
-    }
+	}
+
 
 	public void SetTarget(AttackPoints target)
 	{

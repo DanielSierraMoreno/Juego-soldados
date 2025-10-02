@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AttackPointIsEnemy : AttackPoints
 {
     EnemyTroops troop;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
         troop = GetComponent<EnemyTroops>();
     }
@@ -14,13 +16,19 @@ public class AttackPointIsEnemy : AttackPoints
     {
         
     }
-	public override void GetDamage()
+	public override void GetDamage(int damage = 1)
 	{
-        base.GetDamage();
+        base.GetDamage(damage);
+		troop.timeToShowSliderLive = Time.time;
 
 	}
 	public override void Destroy()
 	{
         base.Destroy();
+
+		if (troop.currentTarget != null)
+		{
+			troop.currentTarget.assignedTroops.Remove(troop);
+		}
 	}
 }

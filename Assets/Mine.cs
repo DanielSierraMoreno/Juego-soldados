@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class Mine : MonoBehaviour
 {
+	public Sprite destroyed, normal, farming;
 	public Pawn player;
 	public bool mining = false;
 
 	public float miningTime = 5;
 
-	float miningStartTime = 0;
+	public float miningStartTime = 0;
+	public bool isDestroyed = false;
 
+	SpriteRenderer sprite;
 	public bool isPlayer
 	{
 		get { 
@@ -23,8 +26,10 @@ public class Mine : MonoBehaviour
 	
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
-    {
-        
+	{
+		this.GetComponentInParent<EnemyAttackPoints>().Initialize();
+
+		sprite = GetComponentInParent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -42,27 +47,54 @@ public class Mine : MonoBehaviour
 				mining = false;
 			}
 
-			if((Time.time- miningStartTime) > miningTime)
+			if (!isDestroyed)
 			{
-				mining = false;
-				player.haveObject = true;
-				player.agent.isStopped = false;
+				sprite.sprite = farming;
 
-				player.state = Pawn.State.IDLE;
-				player.anim.CrossFade("Idle_0", 0);
-				player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().CrossFade("Spawn", 0);
+			}
+			else
+			{
+				sprite.sprite = destroyed;
+				this.GetComponentInParent<EnemyAttackPoints>().structureLives.GetComponent<CanvasGroup>().alpha = 0;
 
-				if (isPlayer)
+			}
+
+			if ((Time.time- miningStartTime) > miningTime)
+			{
+				if (isDestroyed)
 				{
-					player.money = 125;
-					player.agent.isStopped = true;
+					mining = false;
+					player.agent.isStopped = false;
+					player.state = Pawn.State.IDLE;
+					player.anim.CrossFade("Idle", 0);
+					sprite.sprite = normal;
+					isDestroyed = false;
+					this.GetComponentInParent<EnemyAttackPoints>().enabled = true;
+					this.GetComponentInParent<EnemyAttackPoints>().ResetLives();
 				}
 				else
 				{
+					mining = false;
+					player.haveObject = true;
 					player.agent.isStopped = false;
 
-					player.money = 75;
+					player.state = Pawn.State.IDLE;
+					player.anim.CrossFade("Idle_0", 0);
+					player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().CrossFade("Spawn", 0);
+
+					if (isPlayer)
+					{
+						player.money = 125;
+						player.agent.isStopped = true;
+					}
+					else
+					{
+						player.agent.isStopped = false;
+
+						player.money = 75;
+					}
 				}
+
 			}
 
 			if (isPlayer)
@@ -73,6 +105,19 @@ public class Mine : MonoBehaviour
 			else
 			{
 				player.slider.value = ((Time.time - miningStartTime) / miningTime)*0.75f;
+			}
+		}
+		else
+		{
+			if (!isDestroyed)
+			{
+				sprite.sprite = normal;
+
+			}
+			else
+			{
+				sprite.sprite = destroyed;
+				this.GetComponentInParent<EnemyAttackPoints>().structureLives.GetComponent<CanvasGroup>().alpha = 0;
 			}
 		}
 

@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyTroops : MonoBehaviour
 {
-	public enum Type { TORCH };
+	public enum Type { TORCH, DINAMITE, SUICIDE };
 
 	public float moveSpeed = 5;
 
@@ -26,17 +27,36 @@ public class EnemyTroops : MonoBehaviour
 
 	public float delayBetweenAttacks = 0.5f;
 
+	public int maxLive = 5;
+	public Slider sliderLive;
+	public float timeToShowSliderLive = -100;
+
+	public float visionRangeOnDefense = 8;
+	public bool isTower = false;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	protected virtual void Start()
 	{
-
+		timeToShowSliderLive = -100;
 	}
 
 	// Update is called once per frame
 	protected virtual void Update()
 	{
+		if ((Time.time - timeToShowSliderLive) < 2)
+		{
+			sliderLive.value = (float)this.GetComponent<AttackPointIsEnemy>().lives / (float)maxLive;
 
+			// tiempo relativo dentro del intervalo de 2s
+			float t = (Time.time - timeToShowSliderLive) / 2f;
+
+			// alpha va de 1 a 0 en esos 2s
+			sliderLive.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(1f, 0f, t);
+		}
+		else
+		{
+			sliderLive.GetComponent<CanvasGroup>().alpha = 0;
+		}
 
 
 	}

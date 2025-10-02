@@ -18,6 +18,14 @@ public class DefensePoint : MonoBehaviour
     {
         if(occuped && !canMove)
         {
+            if (troop != null)
+            {
+				if (troop.isAttacking)
+				{
+					return;			
+				}
+			}
+
             troop?.agent.SetDestination(this.transform.position);
             troop.agent.stoppingDistance = 0;
 
@@ -38,7 +46,7 @@ public class DefensePoint : MonoBehaviour
         {
             if(troop.troopType != Troop.Type.PAWN)
             {				
-                if (Vector3.Distance(troop.agent.destination, this.transform.position) < 0.05f)
+                if (Vector3.Distance(troop.agent.destination, this.transform.position) < 0.05f && (troop.stateArmy != Troop.StateArmy.CONTRATTACK || troop.stateArmy != Troop.StateArmy.ATTACKING))
                 {
                     occuped = true;
 				    this.troop = troop;

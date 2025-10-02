@@ -1,14 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class Warrior : Troop
 {
 
 	public float attackRange = 1.5f;
-
-
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	protected override void Start()
@@ -19,12 +18,15 @@ public class Warrior : Troop
 		agent.speed = moveSpeed;
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
+		this.GetComponent<EnemyAttackPointIsTroop>().lives = maxLive;
 
 	}
 
 	// Update is called once per frame
 	protected override void Update()
 	{
+		base.Update();
+
 		if (!selected)
 		{
 			if (isDoingAttack) { return; }
@@ -34,13 +36,14 @@ public class Warrior : Troop
 
 			if (stateArmy != StateArmy.DEFENSE)
 			{
-				if (agent.destination.x - transform.position.x > 0)
+				Vector3 vel = agent.velocity;
+
+				if (vel.sqrMagnitude > 0.01f)
 				{
-					this.transform.GetChild(0).localScale = new Vector3(1, 1, 1);
-				}
-				else if (agent.destination.x - transform.position.x < 0)
-				{
-					this.transform.GetChild(0).localScale = new Vector3(-1, 1, 1);
+					if (vel.x > 0)
+						this.transform.GetChild(0).localScale = new Vector3(1, 1, 1);
+					else if (vel.x < 0)
+						this.transform.GetChild(0).localScale = new Vector3(-1, 1, 1);
 				}
 			}
 
@@ -53,6 +56,107 @@ public class Warrior : Troop
 				case ArmyManager.GlobalOrders.DEFENSE:
 
 					agent.radius = 0.1f;
+
+
+
+					if (isAttacking)
+					{
+						Vector2 pos = transform.position;
+
+						// Detectamos todos los colliders en el radio
+						Collider2D[] hits = Physics2D.OverlapCircleAll(pos, visionRangeOnDefense);
+
+						AttackPoints closest = null;
+						float closestDist = Mathf.Infinity;
+
+						foreach (var hit in hits)
+						{
+							// Solo nos interesa enemigos con AttackPoints
+							AttackPoints ap = hit.GetComponent<AttackPoints>();
+							if (ap != null)
+							{
+								float dist = Vector2.Distance(pos, ap.transform.position);
+
+								if (ap.HasSpace)
+								{
+									// Si hay espacio, comprobamos si es el más cercano
+									if (dist < closestDist)
+									{
+										closest = ap;
+										closestDist = dist;
+									}
+								}
+								else
+								{
+									if (ap.assignedTroops.Contains(this))
+									{
+										if (dist < closestDist)
+										{
+											closest = ap;
+											closestDist = dist;
+										}
+									}
+
+								}
+							}
+						}
+
+						if (closest != null)
+						{
+							if(!closest.assignedTroops.Contains(this))
+							{
+								SetTarget(closest);
+							}
+
+						}
+						else
+						{
+							ClearTarget();
+							stateArmy = StateArmy.MOVING;
+							break;
+						}
+
+
+						agent.SetDestination(currentTarget.transform.position);
+
+						if (stateArmy != StateArmy.ATTACKING && currentTarget != null)
+						{
+							agent.radius = 0.25f;
+
+							agent.isStopped = false;
+						}
+
+						if (Vector3.Distance(this.transform.position, agent.destination) < attackRange)
+						{
+							agent.isStopped = true;
+							anim.CrossFade("Idle", 0);
+
+							stateArmy = StateArmy.ATTACKING;
+
+							if (stateArmy != StateArmy.ATTACKING)
+							{
+								lastAttackTime = Time.time;
+							}
+						}
+						else
+						{
+							stateArmy = StateArmy.IDLE;
+
+							anim.CrossFade("Run", 0);
+
+						}
+
+						if (stateArmy == StateArmy.ATTACKING && !isDoingAttack)
+						{
+							if ((Time.time - lastAttackTime) > delayBetweenAttacks)
+							{
+								Attack((currentTarget.transform.position - this.transform.position).normalized);
+							}
+						}
+						return;
+					}
+
+
 					if (stateArmy != StateArmy.DEFENSE)
 					{
 						agent.isStopped = false;
@@ -60,11 +164,69 @@ public class Warrior : Troop
 						agent.SetDestination(ArmyManager.Instance.DefensePointUnoccuped(this.transform.position));
 						anim.CrossFade("Run", 0);
 					}
+					else
+					{
+							Vector2 pos = transform.position;
+
+							// Detectamos todos los colliders en el radio
+							Collider2D[] hits = Physics2D.OverlapCircleAll(pos, visionRangeOnDefense);
+
+							AttackPoints closest = null;
+							float closestDist = Mathf.Infinity;
+
+							foreach (var hit in hits)
+							{
+								// Solo nos interesa enemigos con AttackPoints
+								AttackPoints ap = hit.GetComponent<AttackPoints>();
+								if (ap != null)
+								{
+									float dist = Vector2.Distance(pos, ap.transform.position);
+
+									if (ap.HasSpace)
+									{
+										// Si hay espacio, comprobamos si es el más cercano
+										if (dist < closestDist)
+										{
+											closest = ap;
+											closestDist = dist;
+										}
+									}
+									else
+									{
+									if (ap.assignedTroops.Contains(this))
+									{
+										if (dist < closestDist)
+										{
+											closest = ap;
+											closestDist = dist;
+										}
+									}
+								}
+								}
+							}
+
+							if (closest != null)
+							{
+								if (!closest.assignedTroops.Contains(this))
+								{
+									ClearTarget();
+									SetTarget(closest);
+									agent.isStopped = false;
+
+								}
+							}
+					}
+
+
+
+
+
 
 					break;
 				case ArmyManager.GlobalOrders.ATTACK:
 
-
+					if (currentTarget == null)
+						break;
 					agent.SetDestination(currentTarget.transform.position);
 
 					if (stateArmy != StateArmy.ATTACKING && currentTarget != null)
@@ -147,7 +309,9 @@ public class Warrior : Troop
 	{
 		selected = false;
 
-		agent.isStopped = false;
+		if (this.gameObject.activeSelf) 
+			agent.isStopped = false;
+
 	}
 	public override void Select()
 	{
@@ -174,6 +338,12 @@ public class Warrior : Troop
 		selected = false;
 		agent.isStopped = false;
 		anim.CrossFade("Idle", 0);
+		targetAttack = false;
+
+		currentTarget = null;
+		isAttacking = false;
+		isDoingAttack = false;
+		this.GetComponent<EnemyAttackPointIsTroop>().lives = maxLive;
 	}
 
 	public override void Attack(Vector3 dir)
@@ -203,16 +373,68 @@ public class Warrior : Troop
 
 	private IEnumerator DoAttack(AttackPoints target = null)
 	{
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.3f);
 
-		if (target != null) 
+        if (!this.gameObject.activeSelf)
+        {
+			yield return null;
+        }
+
+        if (target != null) 
 		{ 		
 			target.GetDamage();
+		}
+		else
+		{
+			float radius = 2f;
+			Vector2 pos = transform.position;
+
+			AttackPoints closest = null;
+			float closestDist = Mathf.Infinity;
+
+			Collider2D[] hits = Physics2D.OverlapCircleAll(pos, radius);
+			foreach (var hit in hits)
+			{
+				AttackPoints ap = hit.GetComponent<AttackPoints>();
+				if (ap != null)
+				{
+					Vector2 dir = (Vector2)ap.transform.position - pos;
+					float dist = dir.magnitude;
+
+					if (dist < closestDist) // derecha + más cerca
+					{
+						if (this.transform.GetChild(0).localScale.x == -1)
+						{
+							if (ap.transform.position.x < this.transform.position.x+0.2f)
+							{
+								closest = ap;
+								closestDist = dist;
+							}
+						}
+						else
+						{
+							if (ap.transform.position.x > this.transform.position.x - 0.2f)
+							{
+								closest = ap;
+								closestDist = dist;
+							}
+						}
+
+					}
+				}
+			}
+
+			if(closest != null )
+			{
+				closest.GetDamage();
+
+			}
+
 		}
 
 
 
-		yield return new WaitForSeconds(0.25f);
+		yield return new WaitForSeconds(0.15f);
 		anim.CrossFade("Idle", 0);
 		lastAttackTime = Time.time;
 
@@ -220,4 +442,5 @@ public class Warrior : Troop
 		isDoingAttack = false;
 
 	}
+
 }
